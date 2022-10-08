@@ -1,6 +1,8 @@
 from twilio.rest import Client
+from twilio.twiml.messaging_response import MessagingResponse
 from dotenv import load_dotenv
 import os
+from flask import Flask, request, redirect
 
 load_dotenv()
 
@@ -11,9 +13,18 @@ auth_token  = os.environ["AUTH_TOKEN"]
 
 client = Client(account_sid, auth_token)
 
-message = client.messages.create(
-    to="+14402129348", 
-    from_="+19259405257",
-    body="Hello from Python!")
+app = Flask(__name__)
 
-print(message.sid)
+@app.route("/sms", methods=['GET', 'POST'])
+def reply():
+    """Respond to incoming calls with a simple text message."""
+    print("Incoming webhook request")
+    # Start our TwiML response
+    resp = MessagingResponse()
+
+    # Add a message
+    resp.message("The Robots are coming! Head for the hills!")
+
+    return str(resp)
+
+app.run(debug=True, port=5005)
