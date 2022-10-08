@@ -12,7 +12,7 @@ class Person(db.Model):
     gbpoints = db.Column(db.Integer)
     number = db.Column(db.String(12))
     task_id = db.Column(db.Integer, db.ForiegnKey('task.id'))
-    task = db.relationship('Task',backref=db.backref('posts', lazy=True))
+    task = db.relationship('Task',backref=db.backref('person', lazy=True))
 
 class Task(db.Model):
     base_points = db.Column(db.Integer)
@@ -30,5 +30,7 @@ class Month(db.Model):
     gbotm = db.Column(db.String)
     
 
-
-
+class History(db.Model):
+    person = db.relationship('Person', backref=db.backref('person', lazy=True))
+    task = db.relationship('Task', backref=db.backref('task', lazy=True))
+    month = db.relationship('Month', backref=db.backref('month', lazy=True))
