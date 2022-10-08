@@ -2,8 +2,9 @@ from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
 from dotenv import load_dotenv
 import os
-from app import app
+from app import app, db
 from flask import request, render_template, flash
+from models import TaskHistory
 
 load_dotenv()
 
@@ -28,6 +29,8 @@ def reply():
 def index():
     if request.method == 'POST':
         person = request.form['person']
+        with app.app_context():
+            TaskHistory.mark_task_completed(person)
         flash('Thanks for doing your chore, {}!'.format(person))
     
     return render_template("index.html", people=get_people_chores())
