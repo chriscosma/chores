@@ -2,7 +2,7 @@ from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
 from dotenv import load_dotenv
 import os
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, send_file
 
 load_dotenv()
 
@@ -24,5 +24,9 @@ def reply():
     resp.message("The Robots are coming! Head for the hills!")
 
     return str(resp)
+
+@app.route("/")
+def index():
+    return send_file("index.html")
 
 app.run(debug=True, port=5005)
