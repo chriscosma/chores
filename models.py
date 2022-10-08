@@ -11,7 +11,6 @@ class Person(db.Model):
     name = db.Column(db.String, primary_key = True)
     gbpoints = db.Column(db.Integer)
     number = db.Column(db.String(12))
-    task_id = db.Column(db.Integer, db.ForiegnKey('task.id'))
     task = db.relationship('Task',backref=db.backref('person', lazy=True))
 
 class Task(db.Model):
