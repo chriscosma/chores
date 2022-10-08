@@ -1,5 +1,5 @@
 from app import db, app
-from models import Person, Task
+from models import Person, Task, TaskHistory
 
 people = [
     {
@@ -59,6 +59,13 @@ tasks = [
     }
 ]
 
+task_history = [
+    {
+        'person': 'Chris',
+        'task': 'Clean the kitchen'
+    }
+]
+
 def populate(db):
     for person in people:
         person = Person(**person)
@@ -67,6 +74,10 @@ def populate(db):
     for task in tasks:
         task = Task(**task)
         db.session.add(task)
+    
+    for history in task_history:
+        history = TaskHistory(**history)
+        db.session.add(history)
 
     db.session.commit()
 

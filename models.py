@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 from pytz import timezone
 from app import db
 
@@ -18,14 +18,19 @@ class TaskHistory(db.Model):
     person = db.Column(db.String, db.ForeignKey(Person.name), primary_key=True)
     task = db.Column(db.String, db.ForeignKey(Task.type), primary_key=True)
     date_assigned = db.Column(db.DateTime, nullable=False,
-        default=datetime.now(timezone('EST')))
+        default=datetime.date.today())
+    #date_completed = db.Column(db.DateTime, nullable=False)
     
     @classmethod
-    def get_gbp(person_name: str):
+    def get_gbp(cls, person_name: str):
         gbp = 0
-        history = TaskHistory.query.filter_by(person=person_name)
+        history = cls.query.filter_by(person=person_name)
         for row in history:
-            task = Task.query.filter_by(type=row.task)
-            gbp += task.base_points
+            if row.date_assigned.month == datetime.date.today().month:
+                task = Task.query.filter_by(type=row.task).first()
+                num_days = (datetime.date.today() - row.date_assigned.date).days
+                pts = task.base_points - (task.base_points / 14) * num_days
+                pts = int(max(pts, task.base_points / 14))
+                gbp += pts
         
         return gbp
