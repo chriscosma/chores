@@ -6,9 +6,7 @@ from flask import Flask, request, redirect
 
 load_dotenv()
 
-# Your Account SID from twilio.com/console
 account_sid = "AC098088406eba83d10b50adafa255a22c"
-# Your Auth Token from twilio.com/console
 auth_token  = os.environ["AUTH_TOKEN"]
 
 client = Client(account_sid, auth_token)
