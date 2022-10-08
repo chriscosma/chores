@@ -27,7 +27,7 @@ class TaskHistory(db.Model):
         for row in history:
             if row.date_assigned.month == datetime.date.today().month and row.date_completed is not None:
                 task = Task.query.filter_by(type=row.task).first()
-                num_days = (row.date_completed.date - row.date_assigned.date).days
+                num_days = (row.date_completed.date() - row.date_assigned.date()).days
                 pts = task.base_points - (task.base_points / 14) * num_days
                 pts = int(max(pts, task.base_points / 14))
                 gbp += pts
@@ -36,16 +36,16 @@ class TaskHistory(db.Model):
     
     @classmethod
     def get_latest_assigned_date(cls):
-        most_recent_date = None
+        mrd = None
         min_num_days_since = 10000
         history = cls.query.all()
         for row in history:
             num_days_since = (datetime.date.today() - row.date_assigned.date()).days
             if num_days_since < min_num_days_since:
                 num_days_since = min_num_days_since
-                most_recent_date = row.date_assigned.date()
+                mrd = row.date_assigned.date()
         
-        return most_recent_date
+        return datetime.datetime(mrd.year, mrd.month, mrd.day, 0, 0)
     
     @classmethod
     def mark_task_completed(cls, person_name):
@@ -58,4 +58,5 @@ class TaskHistory(db.Model):
     def is_task_done(cls, person_name):
         assigned_date = cls.get_latest_assigned_date()
         row = cls.query.filter_by(date_assigned=assigned_date, person=person_name).first()
-        return row.date_completed is not None
+        if row is not None:
+            return row.date_completed is not None

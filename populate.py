@@ -62,12 +62,14 @@ tasks = [
 task_history = []
 
 copy = tasks.copy()
-copy.shuffle()
 for person in people:
-    task_history.append({
-        'person': person['name'],
-        'task': copy.pop()
-    })
+    if len(copy) > 0:
+        task = copy.pop()['type']
+        task_history.append({
+            'person': person['name'],
+            'task': task
+        })
+        person['task'] = task
 
 def populate(db):
     for person in people:

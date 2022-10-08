@@ -40,9 +40,12 @@ def get_people_chores(sort=False):
     with app.app_context():
         rows = Person.query.all()
         for row in rows:
-            people.append({'name': row.name,
-            'gb_points': TaskHistory.get_gbp(row.name),
-            'chore': row.task})
+            people.append({
+                'name': row.name,
+                'gb_points': TaskHistory.get_gbp(row.name),
+                'chore': row.task,
+                'completed': TaskHistory.is_task_done(row.name)
+                })
 
     if sort:
         people.sort(reverse=True, key=lambda person: person['gb_points'])

@@ -6,7 +6,11 @@
     <td>{{ person['chore'] }}</td>
     <td>
         <form method="POST">
+            {% if person['completed'] %}
+            <button name="person" value="{{ person['name'] }}" type="submit" disabled>I'm done!</button>
+            {% elif person['chore'] != None %}
             <button name="person" value="{{ person['name'] }}" type="submit">I'm done!</button>
+            {% endif %}
         </form>
     </td>
 </tr>
