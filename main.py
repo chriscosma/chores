@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 from app import app, db
 from flask import request, render_template, flash
-from models import TaskHistory
+from models import TaskHistory,Person
 
 load_dotenv()
 
@@ -36,18 +36,13 @@ def index():
     return render_template("index.html", people=get_people_chores())
 
 def get_people_chores(sort=False):
-    people = [
-        {
-            'name': 'Chris',
-            'gb_points': 100,
-            'chore': 'Clean kitchen'
-        },
-        {
-            'name': 'Riley',
-            'gb_points': 101,
-            'chore': 'Clean bathroom'
-        }
-    ]
+    people = []
+    with app.app_context():
+        rows = Person.query.all()
+        for row in rows:
+            people.append({'name': row.name,
+            'gb_points': TaskHistory.get_gbp(row.name),
+            'chore': row.task})
 
     if sort:
         people.sort(reverse=True, key=lambda person: person['gb_points'])
