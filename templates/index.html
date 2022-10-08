@@ -16,8 +16,9 @@
         {% for message in get_flashed_messages() %}
         <p>{{ message }}</p>
         <img src="{{ url_for('static', filename='goku.webp') }}" width="250">
+        <img src="{{ url_for('static', filename='biscuit.webp') }}" width="202">
         {% endfor %}
-        <h1>GBOTM</h1>
+        <!-- <h1>GBOTM</h1> -->
         <!-- <p>This month's Good Boy of the Month is {{ people[0]['name'] }}</p> -->
         <h1>Chores</h1>
         {{ table(people) }}

@@ -29,10 +29,10 @@
         </tr>
     </thead>
     <tbody>
+        {{ row({'name': 'Biscuit', 'gb_points': 1000000, 'chore': None, 'completed': False}) }}
         {% for person in people %}
             {{ row(person) }}
         {% endfor %}
-        {{ row({'name': 'biscuit', 'gb_points': 1000000, 'chore': None, 'completed': False}) }}
     </tbody>
 </table>
 
