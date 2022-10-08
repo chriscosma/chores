@@ -1,3 +1,5 @@
+{% from "_table.html" import table with context %}
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -6,11 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
     <title>Chores!</title>
 </head>
 <body>
     <main class="container">
         <h1>Chores</h1>
+        {{ table(people) }}
     </main>
 </body>
 </html>
