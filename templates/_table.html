@@ -5,7 +5,7 @@
     <td>{{ person['gb_points'] }}</td>
     <td>{{ person['chore'] }}</td>
     <td>
-        <form action="mark_chore_done" method="POST">
+        <form method="POST">
             <button name="person" value="{{ person['name'] }}" type="submit">I'm done!</button>
         </form>
     </td>

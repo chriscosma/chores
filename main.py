@@ -2,7 +2,7 @@ from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
 from dotenv import load_dotenv
 import os
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, flash
 
 load_dotenv()
 
@@ -12,6 +12,7 @@ auth_token  = os.environ["AUTH_TOKEN"]
 client = Client(account_sid, auth_token)
 
 app = Flask(__name__)
+app.secret_key = os.urandom(12).hex()
 
 @app.route("/sms", methods=['GET', 'POST'])
 def reply():
@@ -25,8 +26,12 @@ def reply():
 
     return str(resp)
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        person = request.form['person']
+        flash('Thanks for doing your chore, {}!'.format(person))
+    
     return render_template("index.html", people=get_people_chores())
 
 def get_people_chores(sort=False):
@@ -47,11 +52,5 @@ def get_people_chores(sort=False):
         people.sort(reverse=True, key=lambda person: person['gb_points'])
     
     return people
-
-@app.route("/mark_chore_done", methods=['POST'])
-def mark_chore_done():
-    person = request.form['person']
-    # Do something with person name
-    return redirect('/')
 
 app.run(debug=True, port=5005)
