@@ -2,7 +2,8 @@ from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
 from dotenv import load_dotenv
 import os
-from flask import Flask, request, render_template, redirect, flash
+from app import app
+from flask import request, render_template, flash
 
 load_dotenv()
 
@@ -10,9 +11,6 @@ account_sid = "AC098088406eba83d10b50adafa255a22c"
 auth_token  = os.environ["AUTH_TOKEN"]
 
 client = Client(account_sid, auth_token)
-
-app = Flask(__name__)
-app.secret_key = os.urandom(12).hex()
 
 @app.route("/sms", methods=['GET', 'POST'])
 def reply():

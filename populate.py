@@ -1,10 +1,5 @@
+from app import db, app
 from models import Person, Task
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
-from sqlalchemy_utils import database_exists, create_database
-import logging
-
-ENGINE_URI = "sqlite:///chores.db"
 
 people = [
     {
@@ -64,21 +59,17 @@ tasks = [
     }
 ]
 
-def populate(engine):
-    with Session(engine) as s:
-        for person in people:
-            person = Person(**person)
-            s.add(person)
+def populate(db):
+    for person in people:
+        person = Person(**person)
+        db.session.add(person)
 
-        for task in tasks:
-            task = Task(**task)
-            s.add(task)
+    for task in tasks:
+        task = Task(**task)
+        db.session.add(task)
 
-        s.commit()
+    db.session.commit()
 
-engine = create_engine(ENGINE_URI)
-if not database_exists(engine.url):
-    logging.info('Database does not exist, creating new one')
-    create_database(engine.url)
-    populate(engine)
-
+with app.app_context():
+    db.create_all()
+    populate(db)
