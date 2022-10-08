@@ -10,7 +10,6 @@ db = SQLAlchemy(app)
 class Person(db.Model):
     __tablename__ = "people"
     name = db.Column(db.String, primary_key=True)
-    gb_points = db.Column(db.Integer)
     phone_number = db.Column(db.String(12))
     task = db.relationship('Task', backpopulates="people")
 
