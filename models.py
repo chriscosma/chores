@@ -40,10 +40,10 @@ class TaskHistory(db.Model):
         min_num_days_since = 10000
         history = cls.query.all()
         for row in history:
-            num_days_since = (datetime.date.today() - row.date_assigned.date).days
+            num_days_since = (datetime.date.today() - row.date_assigned.date()).days
             if num_days_since < min_num_days_since:
                 num_days_since = min_num_days_since
-                most_recent_date = row.date_assigned.date
+                most_recent_date = row.date_assigned.date()
         
         return most_recent_date
     
