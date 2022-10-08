@@ -18,7 +18,7 @@
         <img src="{{ url_for('static', filename='goku.webp') }}" width="250">
         {% endfor %}
         <h1>GBOTM</h1>
-        <p>This month's Good Boy of the Month is {{ people[0]['name'] }}</p>
+        <p>This month's Good Boy of the Month is {{ gbotm }}</p>
         <h1>Chores</h1>
         {{ table(people) }}
     </main>

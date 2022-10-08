@@ -27,13 +27,14 @@ def reply():
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
+    people = get_people_chores()
     if request.method == 'POST':
         person = request.form['person']
         with app.app_context():
             TaskHistory.mark_task_completed(person)
         flash('Thanks for doing your chore, {}!'.format(person))
     
-    return render_template("index.html", people=get_people_chores())
+    return render_template("index.html", people=people,gbotm=get_gbotm(people))
 
 def get_people_chores(sort=False):
     people = []
@@ -51,5 +52,15 @@ def get_people_chores(sort=False):
         people.sort(reverse=True, key=lambda person: person['gb_points'])
     
     return people
+
+def get_gbotm(people):
+    max = 0
+    gbotm = ''
+    for person in people:
+        if person['gb_points'] > max:
+            max = person['gb_points']
+            gbotm = person['name']
+    return gbotm
+
 
 app.run(debug=True, port=5005)
